@@ -43,19 +43,21 @@ pip install kaggle
         - macOS / Linux: ~/.kaggle/kaggle.json
         - Windows: C:\Users\<YourUser>\.kaggle\kaggle.json
     - Ensure correct permissions:
-```bash
-chmod 600 ~/.kaggle/kaggle.json
-```
+
+        ```bash
+        chmod 600 ~/.kaggle/kaggle.json
+        ```
 
     - Download the dataset into the data/ directory:
 
-```bash
-kaggle datasets download rmisra/news-category-dataset
-unzip news-category-dataset.zip -d data/
-```
+        ```bash
+        kaggle datasets download rmisra/news-category-dataset
+        unzip news-category-dataset.zip -d data/
+        ```
 
     - After unzipping, you should see a file like:
-        - data/News_Category_Dataset_v3.json
+    - data/News_Category_Dataset_v3.json
+
 
 #### Option B — Manual Download (alternative)
 1. Open the dataset page: https://www.kaggle.com/datasets/rmisra/news-category-dataset
@@ -199,12 +201,12 @@ Computes global clustering metrics using scikit-learn:
         - Ratio of between-cluster dispersion to within-cluster dispersion.
         - Higher is better.
 
-
     Also:
-        - returns the number of clusters (based on unique labels).
-        - Handles edge cases where there is only one cluster or only noise.
+- Returns the number of clusters (based on unique labels).
+- Handles edge cases where there is only one cluster or only noise.
 
-    Role in the pipeline: Groups semantically similar articles and provides quantitative feedback on cluster quality.
+Role in the pipeline: Groups semantically similar articles and provides quantitative feedback on cluster quality.
+
 
 
 #### 4. Summarization (src/summarizer.py)

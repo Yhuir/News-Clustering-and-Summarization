@@ -32,9 +32,9 @@ You may download it automatically using the Kaggle CLI (recommended) or manually
 #### Option A — Using Kaggle CLI (recommended)
 
 1. **Install the Kaggle CLI** (if you don’t already have it):
-   ```bash
-   pip install kaggle
-    ```
+```bash
+pip install kaggle
+```
 2. Set up your Kaggle API credentials:
     - Go to https://www.kaggle.com/account
     - Scroll to API section → click Create New API Token
@@ -44,15 +44,15 @@ You may download it automatically using the Kaggle CLI (recommended) or manually
         - Windows: C:\Users\<YourUser>\.kaggle\kaggle.json
     - Ensure correct permissions:
 ```bash
-        chmod 600 ~/.kaggle/kaggle.json
+chmod 600 ~/.kaggle/kaggle.json
 ```
 
     - Download the dataset into the data/ directory:
 
-        ```bash
-        kaggle datasets download rmisra/news-category-dataset
-        unzip news-category-dataset.zip -d data/
-        ```
+```bash
+kaggle datasets download rmisra/news-category-dataset
+unzip news-category-dataset.zip -d data/
+```
 
     - After unzipping, you should see a file like:
         - data/News_Category_Dataset_v3.json
@@ -140,10 +140,6 @@ This section describes how the system is structured internally and how the main 
 
     - Reads the JSON-lines file into a Pandas DataFrame.
     - Combines headline and short_description into a single content field:
-
-```python
-        content = headline + ". " + short_description
-```
 
     - Cleans the combined text using clean_text, which:
         - Strips leading/trailing whitespace.

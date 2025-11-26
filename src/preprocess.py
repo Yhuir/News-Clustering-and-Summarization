@@ -18,5 +18,5 @@ def load_dataset(path):
     # Clean the combined text
     df['clean_text'] = df['content'].apply(clean_text)
 
-    # Keep only what we need
-    return df[['headline', 'clean_text', 'category']]
+    # Keep short_description so we can use it for ROUGE evaluation
+    return df[['headline', 'short_description', 'clean_text', 'category']]

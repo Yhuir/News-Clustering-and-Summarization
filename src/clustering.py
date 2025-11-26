@@ -59,7 +59,7 @@ def evaluate_all_cluster_metrics(embeddings, labels):
         "num_clusters": len(unique_labels),
     }
 
-    # DBSCAN can produce a single cluster or all noise; guard these cases.
+    # DBSCAN can produce a single cluster or all noise;
     if len(unique_labels) < 2:
         return metrics
 

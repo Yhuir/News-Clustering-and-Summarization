@@ -3,6 +3,10 @@ from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 
 def summarize_text(text, num_sentences=3):
+    """
+    Summarize the given text using TextRank algorithm.
+    Returns a summary with the specified number of sentences.
+    """
     if not isinstance(text, str) or len(text.strip()) == 0:
         return ""
 

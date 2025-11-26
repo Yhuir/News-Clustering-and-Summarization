@@ -2,6 +2,13 @@ import pandas as pd
 import re
 
 def clean_text(text):
+    """
+    Args:
+        text (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     if not isinstance(text, str):
         return ""
     text = text.strip()
@@ -9,7 +16,14 @@ def clean_text(text):
     return text
 
 def load_dataset(path):
-    # Load the JSON lines file
+    """ 
+    Load dataset from JSONL file and preprocess text.
+    Args:
+        path (str): Path to the JSONL file.
+        Returns:
+        pd.DataFrame: DataFrame
+        
+    """
     df = pd.read_json(path, lines=True)
 
     # Combine headline + short description

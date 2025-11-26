@@ -1,6 +1,6 @@
 """
-Offline evaluation script for:
-1. Clustering metrics (Silhouette, Davies-Bouldin, Calinski-Harabasz)
+evaluation script for:
+1. Clustering metrics 
 2. ROUGE scores for extractive summaries vs. short_description
 """
 
@@ -18,6 +18,10 @@ from rouge_score import rouge_scorer
 
 
 def evaluate_clustering(sample_size=1000, k=8, data_path="data/News_Category_Dataset_v3.json"):
+    """
+    Evaluate clustering quality using multiple metrics on a sample of the dataset.
+    Uses KMeans clustering by default.
+    """
     print("=== Clustering Evaluation ===")
     df = load_dataset(data_path)
     df_sample = df.sample(sample_size, random_state=42)
@@ -70,6 +74,6 @@ def evaluate_rouge(sample_size=200, data_path="data/News_Category_Dataset_v3.jso
 
 
 if __name__ == "__main__":
-    # Run both evaluations as a simple one-shot script
+    # Run both evaluations
     evaluate_clustering(sample_size=1000, k=8)
     evaluate_rouge(sample_size=200)

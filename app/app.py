@@ -21,22 +21,26 @@ from src.summarizer import summarize_cluster
 
 @st.cache_data
 def load_data():
+    # Load the dataset
     df = load_dataset("data/News_Category_Dataset_v3.json")
     return df
 
 
 @st.cache_resource
 def load_model_cached():
+    # Load the embedding model
     return load_embedding_model()
 
 
 @st.cache_data
 def compute_embeddings(_model, texts):
+    # Compute embeddings for a list of texts
     return embed_texts(_model, texts)
 
 
 @st.cache_data
 def perform_clustering(embeddings, k, algorithm="KMeans", eps=0.8, min_samples=5):
+    # Perform clustering and return labels
     if algorithm == "KMeans":
         labels, model = kmeans_cluster(embeddings, k)
     else:
@@ -46,12 +50,14 @@ def perform_clustering(embeddings, k, algorithm="KMeans", eps=0.8, min_samples=5
 
 # -------------------- STREAMLIT UI --------------------
 
+# Page title and description
 st.title("News Clustering & Summarization Prototype")
 st.write(
     "This prototype groups similar news articles and generates cluster summaries "
     "using sentence embeddings, clustering, and extractive summarization."
 )
 
+# --- Load data ---
 df = load_data()
 
 # --- Controls ---
@@ -59,6 +65,7 @@ sample_size = st.slider("Select sample size", 200, 2000, 800)
 
 algorithm = st.selectbox("Clustering algorithm", ["KMeans", "DBSCAN"])
 
+# --- Algorithm-specific parameters ---
 if algorithm == "KMeans":
     k = st.slider("Number of clusters (k)", 3, 12, 6)
     eps = None
@@ -75,6 +82,7 @@ sample_df = df.sample(sample_size, random_state=42).copy()
 
 model = load_model_cached()
 
+# -- Compute embeddings ---
 st.write("Generating embeddings... (takes a few seconds)")
 embeddings = compute_embeddings(model, sample_df["clean_text"].tolist())
 
@@ -98,7 +106,7 @@ st.write(f"Number of clusters: {metrics['num_clusters']}")
 
 unique_labels = set(labels)
 
-
+# --- Special messages for DBSCAN ---
 if algorithm == "DBSCAN":
     if unique_labels == {-1}:
         # All points are noise
@@ -115,7 +123,7 @@ if algorithm == "DBSCAN":
         )
 
 
-
+# --- Display metrics ---
 if metrics["silhouette_score"] is not None:
     st.write(f"Silhouette Score: {metrics['silhouette_score']:.3f}")
 else:
@@ -130,6 +138,7 @@ if metrics["calinski_harabasz_index"] is not None:
 # --- Cluster stats for nicer labels ---
 cluster_ids = sorted(sample_df["cluster"].unique())
 
+# Precompute cluster stats
 cluster_stats = []
 for cid in cluster_ids:
     sub = sample_df[sample_df["cluster"] == cid]
@@ -147,6 +156,7 @@ for cid in cluster_ids:
         }
     )
 
+# --- Cluster summaries ---
 st.markdown("---")
 st.subheader("Cluster Summaries")
 
@@ -164,7 +174,7 @@ for cluster_id in cluster_ids:
         f"({stats['size']} articles)"
     )
 
-
+    # Expandable section per cluster    
     with st.expander(header_text, expanded=False):
         texts = sub["clean_text"].tolist()
         summary = summarize_cluster(texts, num_sentences=3)
@@ -197,7 +207,7 @@ for cluster_id in cluster_ids:
         for h in headlines[:10]:
             st.write(f"- {h}")
 
-        # Optional: show a random article for qualitative inspection
+        # show a random article for qualitative inspection
         if st.button(
             "Show a random article from this cluster",
             key=f"random_{cluster_id}",

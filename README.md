@@ -25,13 +25,41 @@ pip install -r requirements.txt
 This will install packages such as sentence-transformers, streamlit, sumy, scikit-learn, and others required for the app.
 
 ### 3. Download or prepare your dataset
-1. Install the Kaggle CLI and set up your API credentials.
-2. From the project root, run:
+
+This project uses the **News Category Dataset** from Kaggle.  
+You may download it automatically using the Kaggle CLI (recommended) or manually from the dataset page.
+
+#### Option A — Using Kaggle CLI (recommended)
+
+1. **Install the Kaggle CLI** (if you don’t already have it):
+   ```bash
+   pip install kaggle
+    ```
+2. Set up your Kaggle API credentials:
+    - Go to https://www.kaggle.com/account
+    - Scroll to API section → click Create New API Token
+    - This downloads a file named kaggle.json
+    - Place it in:
+        - macOS / Linux: ~/.kaggle/kaggle.json
+        - Windows: C:\Users\<YourUser>\.kaggle\kaggle.json
+    - Ensure correct permissions:
 ```bash
-kaggle datasets download rmisra/news-category-dataset
-unzip news-category-dataset.zip -d data/
+        chmod 600 ~/.kaggle/kaggle.json
 ```
-This will download and unzip the dataset into the `data/` directory.
+    - Download the dataset into the data/ directory:
+```bash
+        kaggle datasets download rmisra/news-category-dataset
+        unzip news-category-dataset.zip -d data/
+```
+
+    - After unzipping, you should see a file like:
+        - data/News_Category_Dataset_v3.json
+
+#### Option B — Manual Download (alternative)
+1. Open the dataset page: https://www.kaggle.com/datasets/rmisra/news-category-dataset
+2. Click Download
+3. Extract the zip file manually
+4. Place the JSON file into the data/ directory
 
 ### 4. Run the Streamlit app
 
@@ -110,9 +138,9 @@ This section describes how the system is structured internally and how the main 
 
     - Reads the JSON-lines file into a Pandas DataFrame.
     - Combines headline and short_description into a single content field:
-        ```python
+```python
         content = headline + ". " + short_description
-        ```
+```
     - Cleans the combined text using clean_text, which:
         - Strips leading/trailing whitespace.
         - Normalizes internal whitespace.

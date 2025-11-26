@@ -255,6 +255,41 @@ This script is optional and is used for reproducible experiments and additional 
     Role in the pipeline: Provides quantitative evidence for the quality of clustering and summaries, which complements the visual, qualitative exploration in the Streamlit app.
 
 
+## Limitations and Future Work
+
+### DBSCAN on high-dimensional embeddings
+
+In addition to K-Means, we implemented DBSCAN as a density-based alternative.  
+However, when applied to high-dimensional sentence embeddings of news articles, DBSCAN often behaves in a degenerate way:
+
+- For many (`eps`, `min_samples`) settings, **all points are labeled as noise (`-1`)**, meaning DBSCAN does not find any dense region.
+- For other settings, DBSCAN finds **one large dense cluster** containing almost all points and very few (or no) smaller clusters.
+
+This happens because:
+
+- The embeddings live in a **high-dimensional space**, where distances between points tend to concentrate and do not form clearly separated dense regions.
+- DBSCAN assumes well-defined dense clusters separated by low-density areas.  
+  Real-world news articles, especially across many topics, form a more continuous cloud of points with overlapping themes.
+
+For this dataset, K-Means produced more stable and interpretable clusters (e.g., WELLNESS, POLITICS, TRAVEL, SPORTS), while DBSCAN mostly served as an exploratory tool to confirm that the data does not exhibit strong density-based cluster structure. Extending the project with HDBSCAN or alternative clustering methods is left as future work.
+
+### Summarization quality
+
+We use extractive TextRank summarization, which is simple and unsupervised but has some limitations:
+
+- Summaries can be **verbose or generic**, especially when clusters mix several subtopics.
+- TextRank sometimes favors well-written but less central sentences.
+
+Future work could explore abstractive summarization or cluster-by-cluster tuning of summary length.
+
+### UI and scalability
+
+The Streamlit app is designed for **interactive exploration on sampled subsets** (e.g., 200–2000 articles).  
+For much larger datasets, rendering many clusters and long summaries in the browser can become slow.  
+Pagination, lazy loading, or a backend API would be natural next steps to improve scalability.
+
+
+
 ## Dependencies
 See `requirements.txt` for a full list of dependencies. 
 

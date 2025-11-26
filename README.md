@@ -46,11 +46,13 @@ You may download it automatically using the Kaggle CLI (recommended) or manually
 ```bash
         chmod 600 ~/.kaggle/kaggle.json
 ```
+
     - Download the dataset into the data/ directory:
-```bash
+
+        ```bash
         kaggle datasets download rmisra/news-category-dataset
         unzip news-category-dataset.zip -d data/
-```
+        ```
 
     - After unzipping, you should see a file like:
         - data/News_Category_Dataset_v3.json
@@ -138,9 +140,11 @@ This section describes how the system is structured internally and how the main 
 
     - Reads the JSON-lines file into a Pandas DataFrame.
     - Combines headline and short_description into a single content field:
+
 ```python
         content = headline + ". " + short_description
 ```
+
     - Cleans the combined text using clean_text, which:
         - Strips leading/trailing whitespace.
         - Normalizes internal whitespace.
@@ -156,9 +160,8 @@ This section describes how the system is structured internally and how the main 
 1. load_embedding_model():
 
     - Loads the pre-trained Sentence-Transformers model:
-        ```python
         sentence-transformers/all-mpnet-base-v2
-        ```
+
     - This model converts text into dense vector embeddings that capture semantic similarity.
 
 2. embed_texts(model, texts, batch_size=64):
@@ -199,6 +202,7 @@ Computes global clustering metrics using scikit-learn:
     - Calinski–Harabasz Index (CHI):
         - Ratio of between-cluster dispersion to within-cluster dispersion.
         - Higher is better.
+
 
     Also:
         - returns the number of clusters (based on unique labels).
